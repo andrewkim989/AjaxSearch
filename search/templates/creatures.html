@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src = "https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $(".btn").each(function(){
+                $(this).click(function(){
+                    $.ajax({
+                        url: "/creature/" + this.id + "/delete",
+                        method: "get",
+                        success: function(data) {
+                            $("#creaturetable").html(data);
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+    <style>
+        table {
+            margin-top: 15px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <table class = "table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Gender</th>
+                <th>Species</th>
+                <th>Image Link</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in creatures %}
+            <tr>
+                <td><a href = "/creature/{{c.id}}">{{c.name}}</a></td>
+                <td>{{c.gender}}</td>
+                <td>{{c.species}}</td>
+                <td><a target = "_blank" href = "{{c.image}}">{{c.image}}</a></td>
+                <td><button class = "btn btn-secondary" id = "{{c.id}}">
+                    Delete</button></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

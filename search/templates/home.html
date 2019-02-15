@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Ajax Pony Search</title>
+    <link rel = "stylesheet"
+    href = "https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+    integrity = "sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+    crossorigin = "anonymous">
+    <script src = "https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $("#creaturetable").html("<h5 style = 'text-align: center;'>Loading...</h5>");
+            $.ajax({
+                url: "/all",
+                method: "get",
+                success: function(data) {
+                    $("#creaturetable").html(data);
+                }
+            });
+
+            $("#topform").submit(function(e){
+                e.preventDefault();
+                $.ajax({
+                    url: $(this).attr("action"),
+                    method: "POST",
+                    data: $(this).serialize(),
+                    success: function(data){
+                        $("#formerror").html("");
+                        $("#formsuccess").html("Success!");
+                        $("#creaturetable").html(data);
+                        $("#topform").trigger("reset");
+                    },
+                    error: function (data) {
+                        $("#formerror").html(data.responseText);
+                        $("#formsuccess").html("");
+                    }
+                });
+            });
+
+            var number = document.getElementById("num");
+
+            num.onkeydown = function(e) {
+            if(!((e.keyCode > 95 && e.keyCode < 106)
+                || (e.keyCode > 47 && e.keyCode < 58) 
+                || e.keyCode == 8)) {
+                    return false;
+                }
+            }
+
+            $("#num").on("input", function() {
+                $("#creaturetable").html("<h5 style = 'text-align: center;'>Loading...</h5>");
+                $.ajax({
+                    url: "/first/" + $("#num").val(),
+                    method: "get",
+                    success: function(data){
+                        $("#creaturetable").html(data);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <style>
+        h1 {
+            text-align: center;
+            padding-top: 15px;
+        }
+        #creatureform {
+            margin-left: 35%;
+            margin-top: 25px;
+            padding-bottom: 20px;
+        }
+        input[type = text] {
+            padding: 3px 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 250px;
+            box-sizing: border-box;
+            margin-left: 10px;
+            margin-right: 15px;
+        }
+        input[type = radio] {
+            margin-left: 30px;
+        }
+        input[type = number] {
+            width: 60px;
+        }
+        .error {
+            color: rgb(231, 48, 48);
+        }
+        .success {
+            color: green;
+        }
+        #blackline {
+            height: 2px;
+            background-color: black;
+            margin-top: 15px;
+        }
+        #displaytable {
+            text-align: center;
+            margin: auto;
+            margin-top: 20px;
+            width: 1200px;
+        }
+        #search {
+            margin-left: 42%;
+            font-size: 22px;
+        }
+    </style>
+</head>
+<body>
+    <div id = "wrapper">
+        <h1>Ajax Pony Search</h1>
+        <div id = "creatureform">
+            <span id = "formerror" class = "error"></span>
+            <span id = "formsuccess" class = "success"></span><br/>
+            <form action = "/create" method = "post" id = "topform">
+                {% csrf_token %}
+                Name: <input type = "text" name = "name" required/><br/><br/>
+
+                Gender: <input type = "radio" name = "gender" value = "Male" required/> Male
+                <input type = "radio" name = "gender" value = "Female"/> Female<br/><br/>
+
+                Image (Optional): <input type = "text" name = "image"/><br/><br/>
+
+                Species: 
+                <select name = "species" required>
+                    <option disabled selected value>Select a species</option>
+                    <option value = "Pony (Earth Pony)">Pony (Earth Pony)</option>
+                    <option value = "Pony (Pegasus)">Pony (Pegasus)</option>
+                    <option value = "Pony (Unicorn)">Pony (Unicorn)</option>
+                    <option value = "Pony (Alicorn)">Pony (Alicorn)</option>
+                    <option value = "Zebra">Zebra</option>
+                    <option value = "Donkey">Donkey</option>
+                    <option value = "Dragon">Dragon</option>
+                    <option value = "Griffon">Griffon</option>
+                    <option value = "Yak">Yak</option>
+                    <option value = "Changeling">Changeling</option>
+                    <option value = "Hippogriff">Hippogriff</option>
+                    <option value = "Other">Other</option>
+                </select>
+                <br/><br/>
+                <input type = "submit" value = "Create" class = "btn btn-primary">
+            </form>
+        </div>
+        <a href = "/search" id = "search">More search options</a>
+
+        <div id = "blackline"></div>
+        <div id = "displaytable">
+            <p>Display the first <input type = "number" name = "num" min = "1" id = "num"/> records</p>
+            <div id = "creaturetable"></div>
+        </div>
+    </div>
+</body>
+</html>

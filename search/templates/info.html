@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{creature.name}}</title>
+    <link rel = "stylesheet"
+    href = "https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+    integrity = "sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+    crossorigin = "anonymous">
+    <script src = "https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            $("#edit").click(function() {
+                $("#creatureform").toggle();
+            });
+
+            $("form").submit(function(e){
+                e.preventDefault();
+                $.ajax({
+                    url: $(this).attr("action"),
+                    method: "POST",
+                    data: $(this).serialize(),
+                    success: function(data){
+                        $("#formerror").html("");
+                        $("#creatureform").toggle();
+                        $("#info").html(data);
+                    },
+                    error: function (data) {
+                        $("#formerror").html(data.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+    <style>
+        body {
+            margin-left: 36%;
+            margin-bottom: 25px;
+        }
+        h1 {
+            margin: 15px;
+            margin-left: 7%;
+        }
+        img {
+            margin: 15px;
+            width: 300px;
+        }
+        button {
+            margin-left: 40px;
+            margin-top: 10px;
+        }
+        input[type = text] {
+            padding: 3px 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 250px;
+            box-sizing: border-box;
+            margin-left: 10px;
+            margin-right: 15px;
+        }
+        input[type = radio] {
+            margin-left: 30px;
+        }
+        input[type = number] {
+            width: 60px;
+        }
+        .error {
+            color: rgb(231, 48, 48);
+        }
+        .delete a {
+            color: white;
+        }
+        #info {
+            margin: auto;
+        }
+        #creatureform {
+            display: none;
+        }
+        #otherinfo {
+            margin-left: 5%;
+        }
+        #backlink {
+            text-align: center;
+            margin-left: 10%;
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id = "info">
+        <h1>{{creature.name}}</h1>
+        {% if creature.image %}
+            <img src = "{{creature.image}}" alt = "{{creature.name}}"/>
+            {% else %}
+            <p style = "margin: 25px;">Image not available</p>
+        {% endif %}
+    
+        <div id = "otherinfo">
+            <h4>Gender: {{creature.gender}}</h4>
+            <h4>Species: {{creature.species}}</h4>
+            <button class = "btn btn-info" id = "edit">Edit</button>
+            <button class = "btn btn-secondary delete">
+                <a href = "/creature/{{creature.id}}/deletetwo">Delete</a></button>
+            <br/><br/>
+            <a href = "/" id = "backlink">Back</a>
+        </div>
+    </div>
+
+    <div id = "creatureform">
+        <span id = "formerror" class = "error"></span><br/>
+        <form action = "/creature/{{creature.id}}/edit" method = "post">
+            {% csrf_token %}
+            Name: <input type = "text" name = "name" value = "{{creature.name}}" required/><br/><br/>
+
+            Gender: <input type = "radio" name = "gender" value = "Male" required/> Male
+            <input type = "radio" name = "gender" value = "Female"/> Female<br/><br/>
+
+            Image (Optional): <input type = "text" name = "image" value = "{{creature.image}}"/><br/><br/>
+
+            Species: 
+            <select name = "species" required value = "{{creature.species}}">
+                <option disabled selected value>Select a species</option>
+                <option value = "Pony (Earth Pony)">Pony (Earth Pony)</option>
+                <option value = "Pony (Pegasus)">Pony (Pegasus)</option>
+                <option value = "Pony (Unicorn)">Pony (Unicorn)</option>
+                <option value = "Pony (Alicorn)">Pony (Alicorn)</option>
+                <option value = "Zebra">Zebra</option>
+                <option value = "Donkey">Donkey</option>
+                <option value = "Dragon">Dragon</option>
+                <option value = "Griffon">Griffon</option>
+                <option value = "Yak">Yak</option>
+                <option value = "Changeling">Changeling</option>
+                <option value = "Hippogriff">Hippogriff</option>
+                <option value = "Other">Other</option>
+            </select>
+            <br/><br/>
+            <input type = "submit" value = "Save edit" class = "btn btn-primary">
+        </form>
+    </div>
+</body>
+</html>

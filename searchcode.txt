@@ -1,0 +1,21 @@
+<h5>Gender</h5>
+            <input type = "checkbox" name = "gender" value = "Male" checked> Male<br/>
+            <input type = "checkbox" name = "gender" value = "Female" checked> Female<br/>
+
+            <h5>Species</h5>
+            <input type = "checkbox" name = "species" value = "Pony (Earth Pony)" checked>
+            Pony (Earth Pony)<br/>
+            <input type = "checkbox" name = "species" value = "Pony (Pegasus)" checked>
+            Pony (Pegasus)<br/>
+            <input type = "checkbox" name = "species" value = "Pony (Unicorn)" checked>
+            Pony (Unicorn)<br/>
+            <input type = "checkbox" name = "species" value = "Pony (Alicorn)" checked>
+            Pony (Alicorn)<br/>
+            <input type = "checkbox" name = "species" value = "Zebra" checked> Zebra<br/>
+            <input type = "checkbox" name = "species" value = "Donkey" checked> Donkey<br/>
+            <input type = "checkbox" name = "species" value = "Dragon" checked> Dragon<br/>
+            <input type = "checkbox" name = "species" value = "Griffon" checked> Griffon<br/>
+            <input type = "checkbox" name = "species" value = "Yak" checked> Yak<br/>
+            <input type = "checkbox" name = "species" value = "Changeling" checked> Changeling<br/>
+            <input type = "checkbox" name = "species" value = "Hippogriff" checked> Hippogriff<br/>
+            <input type = "checkbox" name = "species" value = "Other" checked> Other<br/><br/>
